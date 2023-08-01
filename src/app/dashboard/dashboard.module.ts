@@ -1,3 +1,4 @@
+import { ClassModule } from './pages/class/class.module';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
 import { HomeModule } from './pages/home/home.module';
@@ -28,6 +29,7 @@ import { UsersModule } from './pages/users/users.module';
     UsersModule,
     MatListModule,
     RouterModule,
+    ClassModule,
 
 
   ],

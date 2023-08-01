@@ -1,6 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthComponent } from './auth/auth.component';
+import { ClassComponent } from './dashboard/pages/class/class.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './dashboard/pages/home/home.component';
 import { LoginComponent } from './auth/pages/login/login.component';
@@ -37,6 +38,11 @@ const routes: Routes = [
           }
         ]
       },
+      {
+        // /dashboard/home
+        path: 'class',
+        component: ClassComponent,
+      },
       // {
       //   path: 'users',
       //   component: UsersComponent
@@ -69,11 +75,7 @@ const routes: Routes = [
       }
     ]
   },
- // {
-    // /dashboard/home
-  //  path: 'clases',
-  //  component: classComponent,
-  //},
+
   {
     // ** Se usa para decir "cualquier path que no sea ninguno de los declarados anteriormente"
     path: '**',

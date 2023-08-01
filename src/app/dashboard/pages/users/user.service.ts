@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable, Subject, delay, of, take } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, delay, map, of, take } from 'rxjs';
 import { CreateUserData, UpdateUserData, User } from './models';
 
 import { Injectable } from '@angular/core';
@@ -38,6 +38,13 @@ export class UserService {
 
   getUsers(): Observable<User[]> {
     return this.users$;
+  }
+
+  getUserById(id: number) {
+    return this.users$.pipe(
+      take(1),
+      map(( users ) =>  users.find((u) => u.id === id)),
+    )
   }
 
   createUser(user: CreateUserData): void {

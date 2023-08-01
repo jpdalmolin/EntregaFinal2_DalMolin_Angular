@@ -26,6 +26,7 @@ registerLocaleData(eslocale);
     AuthModule,
     MatCardModule,
 
+
   ],
   providers: [
     {
