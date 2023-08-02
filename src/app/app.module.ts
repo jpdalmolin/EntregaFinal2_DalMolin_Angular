@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './auth/auth.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { ClassModule } from './dashboard/pages/class/class.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { MatCardModule } from '@angular/material/card';
@@ -25,7 +26,7 @@ registerLocaleData(eslocale);
     DashboardModule, // dashboard module
     AuthModule,
     MatCardModule,
-
+    ClassModule,
 
   ],
   providers: [

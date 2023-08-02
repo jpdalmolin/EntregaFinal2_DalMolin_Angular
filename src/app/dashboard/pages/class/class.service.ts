@@ -1,68 +1,80 @@
-import { BehaviorSubject, Observable, take } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, delay, map, of, take } from 'rxjs';
+import { Clase, CreateClassData, UpdateClassData } from './models';
 
-import { Class } from './models';
 import { Injectable } from '@angular/core';
+import { NotifierService } from 'src/app/core/notifier/notifier.service';
+
+const CLASE_DB: Observable<Clase[]> = of([
+  {
+    id: 1,
+    name: 'Marcos',
+    description:'asd',
+  },
+  {
+    id: 2,
+    name: 'mate',
+    description:'asd',
+  },
+]).pipe(delay(1000));
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClassService {
-  private class$ = new BehaviorSubject<Class[]>([]);
+  private _clase$ = new BehaviorSubject<Clase[]>([]);
+  private clase$ = this._clase$.asObservable();
 
-  constructor() {}
+  constructor(private notifier: NotifierService) {}
 
-  getClass(): Observable<Class[]> {
-    return this.class$.asObservable();
+  loadClasses(): void {
+    CLASE_DB.subscribe({
+      next: (clasesFromDb) => this._clase$.next(clasesFromDb),
+    });
   }
 
-  loadProducts(): void {
-    // fetch ...
-    /// .then((data) => this.products$.next(data))
-    this.class$.next([
-      {
-        id: 1,
-        name: 'Matemática',
-        description: 'lorem ipsum',
-
-      },
-      {
-        id: 2,
-        name: 'Literatura',
-        description: 'lorem ipsum',
-
-      },
-      {
-        id: 3,
-        name: 'Historia',
-        description: 'lorem ipsum',
-
-      },
-    ]);
+  getClasses(): Observable<Clase[]> {
+    return this.clase$;
   }
 
-  create(): void {
-    this.class$.pipe(take(1)).subscribe({
+  getClassById(id: number) {
+    return this.clase$.pipe(
+      take(1),
+      map(( classes) =>  classes.find((u) => u.id === id)),
+    )
+  }
+
+  createClass(clase: CreateClassData): void {
+    // TAKE 1 = solo quiero recibir una emision
+    this.clase$.pipe(take(1)).subscribe({
       next: (arrayActual) => {
-        this.class$.next([
+        this._clase$.next([
           ...arrayActual,
-          {
-            id: arrayActual.length + 1,
-            name: 'Random name',
-            description: 'Random description',
-
-          },
+          { ...clase, id: arrayActual.length + 1 },
         ]);
+        this.notifier.showSuccess('Clase creada');
       },
     });
   }
 
-  deleteById(id: number): void {
-    this.class$.pipe(take(1)).subscribe({
+  updateClassById(id: number, claseActualizada: UpdateClassData): void {
+    this.clase$.pipe(take(1)).subscribe({
       next: (arrayActual) => {
-        this.class$.next(
-          arrayActual.filter((p) => p.id !== id),
+        this._clase$.next(
+          arrayActual.map((u) =>
+            u.id === id ? { ...u, ...claseActualizada } : u
+          )
         );
-      }
-    })
+        this.notifier.showSuccess('Usuario Actualizado');
+      },
+    });
+  }
+
+  deleteClassById(id: number): void {
+    this._clase$.pipe(take(1)).subscribe({
+      next: (arrayActual) => {
+        this._clase$.next(arrayActual.filter((u) => u.id !== id));
+        this.notifier.showSuccess('Clase eliminada');
+      },
+    });
   }
 }

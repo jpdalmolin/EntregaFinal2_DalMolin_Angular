@@ -1,4 +1,5 @@
 import { ClassModule } from './pages/class/class.module';
+import { ClassTableComponent } from './pages/class/components/class-table/class-table.component';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
 import { HomeModule } from './pages/home/home.module';
@@ -17,7 +18,8 @@ import { UsersModule } from './pages/users/users.module';
   declarations: [
     DashboardComponent,
     NavMenuComponent,
-    ToolbarComponent
+    ToolbarComponent,
+
   ],
   imports: [
     CommonModule,
